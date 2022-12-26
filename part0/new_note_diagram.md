@@ -13,13 +13,13 @@ sequenceDiagram
     note over browser: browser starts executing js-code that requests JSON data from server
 
     browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+    server->>browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
 
     note over browser: browser executes the event handler that renders notes to display
  
-    note over browser: The user fills the form and clicks submit button 
-    browser ->> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/exampleapp/new_note 
-    note over browser, server: [{note: "new note"}]
+    note over browser: The user fills 'new note' in the form and clicks submit button 
+    browser ->> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/exampleapp/new_note WITH PAYLOAD [{note: "new note"}]
+
     
     server ->> browser: REDIRECT TO https://studies.cs.helsinki.fi/exampleapp/notes
     browser ->> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
@@ -28,4 +28,9 @@ sequenceDiagram
     server ->> browser: main.css
     browser ->> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
     server ->> browser: main.js
+    browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    server->>browser: [{ content: "new note", date: "2022-12-26" }, ...]
+
+    note over browser: browser executes the event handler that renders notes to display
+ 
 ```
