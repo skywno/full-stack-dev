@@ -6,16 +6,22 @@ const Header = (props) => {
   )
 }
 
+const Part = (props) => {
+  return (
+    <p>
+      {props.section.part} {props.section.exercises}
+    </p>
+  )
+}
+
 const Content = (props) => {
-  const rows = []
-  props.sections.forEach((section) => {
-    rows.push(
-      <p>
-        {section.part} {section.exercises}
-      </p>
-    )
-  })
-  return rows;
+  return (
+    <div>
+      <Part section={props.sections[0]} />
+      <Part section={props.sections[1]} />
+      <Part section={props.sections[2]} />
+    </div>
+  )
 }
 
 const Total = (props) => {
