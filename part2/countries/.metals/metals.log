@@ -1,0 +1,19 @@
+2023.01.07 19:18:37 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/skywno/full-stack-dev/part2/countries/.metals/lsp.trace.json or /home/skywno/.cache/metals/lsp.trace.json[0m
+2023.01.07 19:18:38 INFO  logging to file /home/skywno/full-stack-dev/part2/countries/.metals/metals.log[0m
+2023.01.07 19:18:38 INFO  Started: Metals version 0.11.10 in workspace '/home/skywno/full-stack-dev/part2/countries' for client Visual Studio Code 1.74.2.[0m
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
+SLF4J: Class path contains SLF4J bindings targeting slf4j-api versions 1.7.x or earlier.
+SLF4J: Ignoring binding found at [jar:file:/home/skywno/.cache/coursier/v1/https/repo1.maven.org/maven2/com/outr/scribe-slf4j_2.13/3.10.5/scribe-slf4j_2.13-3.10.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See https://www.slf4j.org/codes.html#ignoredBindings for an explanation.
+2023.01.07 19:18:39 INFO  time: initialize in 1.65s[0m
+2023.01.07 19:18:42 WARN  Build server is not auto-connectable.[0m
+2023.01.07 19:18:42 WARN  no build tool detected in workspace '/home/skywno/full-stack-dev/part2/countries'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+Jan 07, 2023 7:22:54 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jan 07, 2023 7:22:54 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jan 07, 2023 7:24:16 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2023.01.08 12:36:43 INFO  shutting down Metals[0m
