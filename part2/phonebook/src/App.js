@@ -1,57 +1,68 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
-
-const Filter = ({ value, onChange }) => {
-  return (
-    <div>
-      filter shown with <input value={value} onChange={onChange} />
-    </div>
-  )
-}
-
-const PersonForm = ({ onSubmit, name, nameOnChange, number, numberOnChange }) => {
-  return (
-    <form onSubmit={onSubmit}>
-      <div>name: <input value={name} onChange={nameOnChange} /> </div>
-      <div>number: <input value={number} onChange={numberOnChange} /> </div>
-      <div> <button type="submit">add</button> </div>
-    </form>
-  )
-}
-
-const Persons = ({ persons, filter }) => {
-  const doFilter = (filter) => persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
-
-  return (
-    <div>
-      {doFilter(filter).map(person => <div key={person.name}> {person.name} {person.number} </div>)}
-    </div>
-  )
-}
+import personService from './services/personService'
+import { Filter, Person, Notification } from './components/components'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('');
-  const [newFilter, setNewFilter] = useState('');
+  const [newNumber, setNewNumber] = useState('')
+  const [newFilter, setNewFilter] = useState('')
+  const [newMessage, setNewMessage] = useState('')
+
+  const personsFiltered = persons.filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
+
+  const runTimeout = () => {
+    setTimeout(() => {
+      setNewMessage('')
+    }, 5000)
+  }
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('response', response)
-        setPersons(response.data)
-      })
+    personService
+      .getAll()
+      .then(persons => setPersons(persons))
   }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
 
-    persons.map(person => person.name).includes(newName)
-      ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat({ name: newName, number: newNumber }))
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
 
+    if (persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase())) {
+      const person = persons.find(person => person.name = newName)
+      const updatedPerson = { ...person, number: newNumber }
+      personService.put(updatedPerson)
+        .then(response => {
+          setPersons(persons.map(person => person.name !== newName ? person : response))
+          setNewMessage(`Updated ${newName}'s phone number to ${newNumber}`)
+        })
+        .catch(error => {
+          setNewMessage(`Information of ${newName} has already been removed from servers`)
+        })
+    }
+    else {
+      personService.create(newPerson).then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewMessage(`Added ${returnedPerson.name} `)
+      })
+    }
+    runTimeout()
     setNewName('')
     setNewNumber('')
+  }
+
+  const deletePerson = (name, id) => {
+    window.confirm(`Delete ${name} `)
+    personService.remove(id).then(_ => {
+      setPersons(persons.filter(person => person.id !== id))
+      setNewMessage(`Deleted ${name} `)
+      runTimeout()
+    }).catch(error => {
+      setNewMessage(`Information of ${newName} has already been removed from servers`)
+    })
   }
 
   const handleNameChange = (event) => {
@@ -69,15 +80,25 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={newMessage} />
       <Filter value={newFilter} onChange={handleFilterChange}></Filter>
       <h3>add a new</h3>
-      <PersonForm onSubmit={addPerson}
-        name={newName}
-        nameOnChange={handleNameChange}
-        number={newNumber}
-        numberOnChange={handleNumberChange} />
+      <form onSubmit={addPerson}>
+        <div>name: <input value={newName} onChange={handleNameChange} /> </div>
+        <div>number: <input value={newNumber} onChange={handleNumberChange} /> </div>
+        <div> <button type="submit">add</button> </div>
+      </form>
       <h3>Numbers</h3>
-      <Persons persons={persons} filter={newFilter} />
+      <div>
+        {personsFiltered
+          .map(person =>
+            <Person key={person.id}
+              name={person.name}
+              number={person.number}
+              onDelete={() => deletePerson(person.name, person.id)} />
+          )
+        }
+      </div>
     </div>
   )
 }
