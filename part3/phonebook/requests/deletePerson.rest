@@ -1,0 +1,10 @@
+DELETE http://localhost:3001/api/persons/5
+
+###
+
+# 404 Not Found expected
+GET http://localhost:3001/api/persons/5
+
+###
+GET http://localhost:3001/api/persons
+Content-Type: application/json
