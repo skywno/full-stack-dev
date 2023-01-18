@@ -38,14 +38,14 @@ const App = () => {
       if (ok) {
 
         const updatedPerson = { ...existingPerson, number: newNumber }
-        personService.put(existingPerson.id, updatedPerson)
+        personService.put(updatedPerson)
           .then(savedPerson => {
             setPersons(persons.map(person => person.name !== newName ? person : savedPerson))
             notify(`Updated info of ${savedPerson.name}`)
           })
           .catch(error => {
             notify(
-              `the person '${existingPerson.name}' was had already been from the server`, 'alert'
+              `the person '${existingPerson.name}' has already been removed from servers`, 'alert'
             )
             setPersons(persons.filter(p => p.id !== existingPerson.id))
           })
@@ -54,23 +54,26 @@ const App = () => {
       }
     }
 
-    personService.create(newPerson).then(savedPerson => {
-      setPersons(persons.concat(savedPerson))
-      notify(`Added ${savedPerson.name}`)
-    })
+    personService.create(newPerson)
+      .then(savedPerson => {
+        setPersons(persons.concat(savedPerson))
+        notify(`Added ${savedPerson.name}`)
+      })
+      .catch(error => {
+        console.log(error.response.data.error)
+      })
   }
 
   const deletePerson = (id) => {
     const toDelete = persons.find(p => p.id === id)
     const ok = window.confirm(`Delete ${toDelete.name}`)
     if (ok) {
-
       personService.remove(id).then(() => {
         setPersons(persons.filter(person => person.id !== id))
         notify(`Deleted ${toDelete.name}`)
       }).catch(error => {
         notify(
-          `the person '${toDelete.name}' was had already been from the server`, 'alert'
+          `the person '${toDelete.name}' already has been deleted from the server`, 'alert'
         )
       })
     }

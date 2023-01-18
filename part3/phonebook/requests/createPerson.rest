@@ -3,10 +3,11 @@ content-type: application/json
 
 {
     "name": "sample",
-    "number": "1234567890"
+    "number": "12-34567890"
 }
 
 ###
+### should return 400
 POST http://localhost:3001/api/persons
 content-type: application/json
 
@@ -20,9 +21,21 @@ POST http://localhost:3001/api/persons
 content-type: application/json
 
 {
+    "name": "a",
+    "number": "1234567890"
+}
+
+
+###
+### should return 400
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
     "name": "sample23",
     "number": ""
 }
+
 
 
 ###
