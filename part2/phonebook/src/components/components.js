@@ -16,9 +16,13 @@ const Person = ({ name, number, onDelete }) => {
     )
 }
 
-const Notification = ({ message }) => {
-    const successNotificationStyle = {
-        color: 'green',
+const Notification = ({ notification }) => {
+    if (notification === '') {
+        return null
+    }
+
+    const notificationStyle = {
+        color: notification === 'alert' ? 'red' : 'green',
         backgroundColor: 'lightgrey',
         border: 'solid',
         borderColor: 'green',
@@ -29,29 +33,11 @@ const Notification = ({ message }) => {
         marginBottom: 10
     }
 
-    const failNotificationStyle = {
-        color: 'red',
-        backgroundColor: 'lightgrey',
-        border: 'solid',
-        borderColor: 'red',
-        borderRadius: 8,
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 10,
-        marginBottom: 10
-    }
-
-    if (message === '') {
-        return null
-    }
-
     return (
-        <div style={message.includes('already') ? failNotificationStyle : successNotificationStyle}>
-            {message}
+        <div style={notificationStyle}>
+            {notification}
         </div>
     )
-
-
 }
 
 export { Filter, Person, Notification }

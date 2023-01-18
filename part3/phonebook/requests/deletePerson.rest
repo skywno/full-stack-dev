@@ -1,0 +1,16 @@
+###
+GET http://localhost:3001/api/persons
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:3001/api/persons/63c5a92ad849a09aa12ba1b1
+
+###
+
+# 404 Not Found expected
+GET http://localhost:3001/api/persons/63c5a92ad849a09aa12ba1b1
+
+###
+GET http://localhost:3001/api/persons
+Content-Type: application/json

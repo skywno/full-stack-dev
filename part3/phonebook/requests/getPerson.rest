@@ -1,0 +1,19 @@
+GET HTTP://localhost:3001/api/persons
+
+###
+
+# GET request that throws CastError
+# Expect: 400 Bad Request 
+Get HTTP://localhost:3001/api/persons/34567876543567865467
+
+###
+
+# GET request for a existing person entry
+# Expect: 200 with JSON
+GET HTTP://localhost:3001/api/persons/63c70e16ae4d94d124571436
+
+
+###
+
+# GET request for info
+GET HTTP://localhost:3001/info
