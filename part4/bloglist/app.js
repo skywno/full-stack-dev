@@ -1,13 +1,12 @@
 const config = require('./utils/config')
-const blogsRouter = require('./controllers/blogs')
-const logger = require('./utils/logger')
 const express = require('express')
-
+require('express-async-errors')
 const app = express()
 const cors = require('cors')
+app.use(cors())
+const blogsRouter = require('./controllers/blogs')
+const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-
-logger.info('connecting to', config.MONGODB_URI)
 
 mongoose.connect(config.MONGODB_URI)
   .then(() => {
@@ -17,9 +16,12 @@ mongoose.connect(config.MONGODB_URI)
     logger.error('error connection to MongoDB:', error.message)
   })
 
-app.use(cors())
 app.use(express.json())
 
 app.use('/api/blogs', blogsRouter)
+
+const { errorHandler, unknownEndpoint } = require('./utils/error_handler')
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 module.exports = app
