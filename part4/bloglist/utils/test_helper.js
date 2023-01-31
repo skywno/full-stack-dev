@@ -1,3 +1,5 @@
+
+
 const newBlog = [{
   title: 'This is new blog post',
   author: 'Gyeha Lim',
@@ -62,7 +64,18 @@ const initialBlogs = [
   }
 ]
 
+const testUser = [{
+  username: "test user",
+  name: "test user name",
+  password: "password"
+}]
+
+const getValidToken = () => {
+
+}
+
 module.exports = {
+  testUser,
   newBlog,
   newBlogMissingLikes,
   newBlogMissingTitle,
