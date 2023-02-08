@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import CreateBlogForm from './components/CreateBlogForm'
+import BlogForm from './components/BlogForm'
+import Toggable from './components/Toggable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -13,18 +15,15 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
   const [message, setMessage] = useState(null)
   const [messageFlag, setMessageFlag] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then(
+      blogs => {
+        blogs.sort((one, another) => another.likes - one.likes)
+        setBlogs(blogs)
+      })
   }, [])
 
   useEffect(() => {
@@ -36,6 +35,22 @@ const App = () => {
     }
   }, [])
 
+  const updateMessage = (message, flag) => {
+    setMessage(message)
+    setMessageFlag(flag)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+
+  }
+
+  const refreshBlogs = async () => {
+    const blogs = await blogService.getAll()
+    const newBlogs = blogs.sort((one, another) => another.likes - one.likes)
+    setBlogs(newBlogs)
+  }
+
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -46,11 +61,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setMessage('Wrong username or password')
-      setMessageFlag('error')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      updateMessage('Wrong username or password', 'error')
     }
   }
 
@@ -59,30 +70,27 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = (event) => {
-    event.preventDefault()
-    blogService.create({ title, author, url })
-    setMessage(`a new blog ${title} by ${author}`)
-    setMessageFlag('success')
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-
-
+  const addBlog = async (blogObject) => {
+    try {
+      await blogService.create(blogObject)
+      await refreshBlogs()
+      updateMessage(`a new blog ${blogObject.title} by ${blogObject.author}`, 'success')
+    } catch (exception) {
+      updateMessage('Invalid input', 'error')
+    }
   }
 
   const blogList = () => {
     return (
       <div>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
-        <h2>create new</h2>
-        <CreateBlogForm onSubmit={handleCreateBlog} title={title} onTitleChange={setTitle} author={author}
-          onAuthorChange={setAuthor} url={url} onUrlChange={setUrl} />
+        <Toggable>
+          <BlogForm addBlog={addBlog} />
+        </Toggable>
         <br></br>
         <br></br>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+        {blogs
+          .map(blog => <Blog key={blog.id} blog={blog} onUpdate={refreshBlogs} />)}
       </div>
     )
   }
@@ -102,3 +110,4 @@ const App = () => {
 }
 
 export default App
+
