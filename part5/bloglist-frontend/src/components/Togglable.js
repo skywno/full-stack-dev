@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Toggable = (props) => {
+const Togglable = (props) => {
   const [formVisible, setFormVisible] = useState(false)
 
   const hideWhenFormVisible = { display: formVisible ? 'none' : '' }
@@ -23,4 +23,6 @@ const Toggable = (props) => {
   )
 }
 
-export default Toggable
+Togglable.displayName = 'Togglable'
+
+export default Togglable
