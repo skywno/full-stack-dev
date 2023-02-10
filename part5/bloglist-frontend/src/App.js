@@ -41,7 +41,6 @@ const App = () => {
     setTimeout(() => {
       setMessage(null)
     }, 5000)
-
   }
 
   const refreshBlogs = async () => {
@@ -49,7 +48,6 @@ const App = () => {
     const newBlogs = blogs.sort((one, another) => another.likes - one.likes)
     setBlogs(newBlogs)
   }
-
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -62,6 +60,8 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       updateMessage('Wrong username or password', 'error')
+      setUsername('')
+      setPassword('')
     }
   }
 
@@ -80,29 +80,35 @@ const App = () => {
     }
   }
 
+  const loginPage = () => {
+    return (
+      <>
+        <h2>log in to application</h2>
+        <Notification message={message} flag={messageFlag} />
+        <LoginForm onSubmit={handleLogin} username={username} onUsernameChange={setUsername}
+          password={password} onPasswordChange={setPassword} />
+      </>
+    )
+  }
+
   const blogList = () => {
     return (
       <div>
+        <h2>blogs</h2>
+        <Notification message={message} flag={messageFlag}></Notification>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
         <Togglable>
           <BlogForm addBlog={addBlog} />
         </Togglable>
-        <br></br>
-        <br></br>
-        {blogs
-          .map(blog => <Blog key={blog.id} blog={blog} onUpdate={refreshBlogs} />)}
+        {blogs.map(blog => <Blog key={blog.id} blog={blog} onUpdate={refreshBlogs} />)}
       </div>
     )
   }
+
   return (
     <div>
       {user === null
-        ? <h2>log in to application</h2>
-        : <h2>blogs</h2>}
-      <Notification message={message} flag={messageFlag}></Notification>
-      {user === null
-        ? <LoginForm onSubmit={handleLogin} username={username} onUsernameChange={setUsername}
-          password={password} onPasswordChange={setPassword} />
+        ? loginPage()
         : blogList()
       }
     </div>
