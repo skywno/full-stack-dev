@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, onUpdate }) => {
+const Blog = ({ blog, handleDelete, handleLikesClick }) => {
 
   const [details, setDetails] = useState(false)
 
@@ -11,6 +10,7 @@ const Blog = ({ blog, onUpdate }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
+    display: 'block'
   }
 
   const emptyStyle = {
@@ -21,35 +21,17 @@ const Blog = ({ blog, onUpdate }) => {
     setDetails(!details)
   }
 
-  const increaseLikesByOne = async () => {
-    const blogs = await blogService.getAll()
-    const matchedBlog = blogs.filter(b => b.id === blog.id)[0]
-    const updatedBlog = {
-      ...matchedBlog,
-      likes: matchedBlog.likes + 1
-    }
-    await blogService.update(blog.id, updatedBlog)
-    await onUpdate()
-  }
-
-  const handleDelete = async () => {
-    const answer = window.confirm(`Remove blog "${blog.title}" by ${blog.author}`)
-    if (answer === true) {
-      await blogService.deleteBlog(blog.id)
-      await onUpdate()
-    }
-  }
   return (
     <>
       <div style={details ? emptyStyle : blogStyle}>
-        {blog.title} <button onClick={toggleDetails}>view</button>
+        {blog.title} <div>{blog.url}</div> <button onClick={toggleDetails}>view</button>
       </div>
-      <div style={details ? blogStyle : emptyStyle}>
+      <div style={details ? blogStyle : emptyStyle} className='blogInDetail'>
         <div>{blog.title} <button onClick={toggleDetails}>hide</button></div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button onClick={increaseLikesByOne}>like</button></div>
+        <div>likes {blog.likes} <button onClick={async () => await handleLikesClick(blog)}>like</button></div>
         <div>{blog.author}</div>
-        <button onClick={handleDelete}>remove</button>
+        <button onClick={async () => await handleDelete(blog)}>remove</button>
       </div>
     </>
   )

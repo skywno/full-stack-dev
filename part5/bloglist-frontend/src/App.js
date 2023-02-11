@@ -80,6 +80,25 @@ const App = () => {
     }
   }
 
+  const increaseLikesByOne = async (blogObject) => {
+    const blogs = await blogService.getAll()
+    const matchedBlog = blogs.filter(b => b.id === blogObject.id)[0]
+    const updatedBlog = {
+      ...matchedBlog,
+      likes: matchedBlog.likes + 1
+    }
+    await blogService.update(blogObject.id, updatedBlog)
+    await refreshBlogs()
+  }
+
+  const handleDelete = async (blogObject) => {
+    const answer = window.confirm(`Remove blog "${blogObject.title}" by ${blogObject.author}`)
+    if (answer === true) {
+      await blogService.deleteBlog(blogObject.id)
+      await refreshBlogs()
+    }
+  }
+
   const loginPage = () => {
     return (
       <>
@@ -100,7 +119,7 @@ const App = () => {
         <Togglable>
           <BlogForm addBlog={addBlog} />
         </Togglable>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} onUpdate={refreshBlogs} />)}
+        {blogs.map(blog => <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLikesClick={increaseLikesByOne} />)}
       </div>
     )
   }
