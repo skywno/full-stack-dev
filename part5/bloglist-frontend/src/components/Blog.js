@@ -24,13 +24,20 @@ const Blog = ({ blog, handleDelete, handleLikesClick }) => {
   return (
     <>
       <div style={details ? emptyStyle : blogStyle}>
-        {blog.title} <div>{blog.url}</div> <button onClick={toggleDetails}>view</button>
+        <div>
+          {blog.title}
+        </div>
+        <div>
+          {blog.url}
+        </div>
+        <button onClick={toggleDetails}>view</button>
       </div>
       <div style={details ? blogStyle : emptyStyle} className='blogInDetail'>
-        <div>{blog.title} <button onClick={toggleDetails}>hide</button></div>
+        <div>{blog.title} </div>
         <div>{blog.url}</div>
         <div>likes {blog.likes} <button onClick={async () => await handleLikesClick(blog)}>like</button></div>
         <div>{blog.author}</div>
+        <button onClick={toggleDetails}>hide</button>
         <button onClick={async () => await handleDelete(blog)}>remove</button>
       </div>
     </>

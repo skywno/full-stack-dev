@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 const app = express()
 app.use(cors())
 app.use(middleware.tokenExtractor)
-
+app.use(middleware.requestLogger)
 mongoose.connect(config.MONGODB_URI)
   .then(() => {
     logger.info('connected to MongoDB')
