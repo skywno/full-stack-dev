@@ -22,7 +22,8 @@
     "start": "NODE_ENV=production index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "NODE_ENV=test nodemon index.js"
   },
   "author": "Gyeha Lim",
   "license": "ISC",
