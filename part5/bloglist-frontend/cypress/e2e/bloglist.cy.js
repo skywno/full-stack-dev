@@ -52,7 +52,7 @@ describe('user', function () {
     cy.should('not.contain', 'new test title')
   })
 
-  it.only('cannot delete the blog that another user created', function () {
+  it('cannot delete the blog that another user created', function () {
     cy.contains('logout').click()
     cy.get('#username-input').type('jisungpark')
     cy.get('#password-input').type('1234567890')
@@ -61,5 +61,31 @@ describe('user', function () {
 
     cy.get('.blogInShort').contains('new test title').parent().find('#view-button').click()
     cy.get('.blogInDetail').should('not.have.id', '#delete-button')
+  })
+
+  describe('The blogs', function () {
+    beforeEach(function () {
+      cy.addBlog({ title: 'new test title 1', author: 'new test author 1', url: 'url' })
+      cy.addBlog({ title: 'new test title 2', author: 'new test author 2', url: 'url' })
+      cy.addBlog({ title: 'new test title 3', author: 'new test author 3', url: 'url' })
+    })
+
+    it.only('blogs are ordered according to likes', function () {
+      cy.get('.blog').contains('new test title 1').parent().find('#view-button').click()
+      cy.get('.blogInDetail').contains('new test title 1').parent().find('#like-button').click()
+      cy.get('.blogInDetail').contains('new test title 1').parent().find('#like-button').click()
+      cy.get('.blogInDetail').contains('new test title 1').parent().find('#like-button').click()
+
+      cy.get('.blog').contains('new test title 2').parent().find('#view-button').click()
+      cy.get('.blogInDetail').contains('new test title 2').parent().find('#like-button').click()
+      cy.get('.blogInDetail').contains('new test title 2').parent().find('#like-button').click()
+
+      cy.get('.blog').contains('new test title 3').parent().find('#view-button').click()
+      cy.get('.blogInDetail').contains('new test title 3').parent().find('#like-button').click()
+
+      cy.get('.blog').eq(0).should('contain', 'new test title 1')
+      cy.get('.blog').eq(1).should('contain', 'new test title 2')
+      cy.get('.blog').eq(2).should('contain', 'new test title 3')
+    })
   })
 })
