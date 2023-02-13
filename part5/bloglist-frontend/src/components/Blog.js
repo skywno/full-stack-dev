@@ -1,9 +1,8 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, handleDelete, handleLikesClick }) => {
+const Blog = ({ blog, handleDelete, handleLikesClick, loggedInUser }) => {
 
   const [details, setDetails] = useState(false)
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -19,6 +18,14 @@ const Blog = ({ blog, handleDelete, handleLikesClick }) => {
 
   const toggleDetails = () => {
     setDetails(!details)
+  }
+
+  const deleteButton = () => {
+    if (loggedInUser.username === blog.user.username) {
+      return (
+        <button id='delete-button' onClick={async () => await handleDelete(blog)}>remove</button>
+      )
+    }
   }
 
   return (
@@ -38,7 +45,7 @@ const Blog = ({ blog, handleDelete, handleLikesClick }) => {
         <div>likes {blog.likes} <button onClick={async () => await handleLikesClick(blog)}>like</button></div>
         <div>{blog.author}</div>
         <button onClick={toggleDetails}>hide</button>
-        <button id='delete-button' onClick={async () => await handleDelete(blog)}>remove</button>
+        {deleteButton()}
       </div>
     </>
   )
