@@ -23,14 +23,14 @@ const Blog = ({ blog, handleDelete, handleLikesClick }) => {
 
   return (
     <>
-      <div style={details ? emptyStyle : blogStyle}>
+      <div style={details ? emptyStyle : blogStyle} className='blogInShort'>
         <div>
           {blog.title}
         </div>
         <div>
           {blog.url}
         </div>
-        <button onClick={toggleDetails}>view</button>
+        <button onClick={toggleDetails} id='view-button'>view</button>
       </div>
       <div style={details ? blogStyle : emptyStyle} className='blogInDetail'>
         <div>{blog.title} </div>
@@ -38,7 +38,7 @@ const Blog = ({ blog, handleDelete, handleLikesClick }) => {
         <div>likes {blog.likes} <button onClick={async () => await handleLikesClick(blog)}>like</button></div>
         <div>{blog.author}</div>
         <button onClick={toggleDetails}>hide</button>
-        <button onClick={async () => await handleDelete(blog)}>remove</button>
+        <button id='delete-button' onClick={async () => await handleDelete(blog)}>remove</button>
       </div>
     </>
   )
