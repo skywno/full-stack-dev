@@ -11,6 +11,7 @@ const LoginForm = ({ onSubmit, username, onUsernameChange, password, onPasswordC
             value={username}
             name="Username"
             onChange={({ target }) => onUsernameChange(target.value)}
+            id='username-input'
           />
         </div>
         <div>
@@ -20,6 +21,7 @@ const LoginForm = ({ onSubmit, username, onUsernameChange, password, onPasswordC
             value={password}
             name="Password"
             onChange={({ target }) => onPasswordChange(target.value)}
+            id='password-input'
           />
         </div>
         <button type="submit">login</button>
