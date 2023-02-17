@@ -38,8 +38,8 @@ export const vote = (id) => {
 }
 
 const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
+  console.log('anecdotes state now: ', state)
+  console.log('anecdotes action', action)
 
   switch (action.type) {
     case 'CREATE': {
