@@ -13,10 +13,8 @@ describe('anecdote reducer', () => {
 
   test('vote can be incremented', () => {
     const action = {
-      type: 'VOTE',
-      payload: {
-        id: 1
-      }
+      type: 'anecdotes/vote',
+      payload: 1
     }
     const state = initialState
 
