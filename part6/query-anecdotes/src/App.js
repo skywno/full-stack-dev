@@ -2,10 +2,13 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useQueryClient, useMutation } from 'react-query'
 import { getAllAnecdotes, updateAnecdote } from './requests'
+import { useNotificationDispatch } from './NotificationContext'
 
 const App = () => {
+  const notificationDispatch = useNotificationDispatch()
+
   const queryClient = useQueryClient()
-  
+
   const updateAnecdoteMutation = useMutation(updateAnecdote, {
     onSuccess: () => {
       queryClient.invalidateQueries('anecdotes')
@@ -13,7 +16,6 @@ const App = () => {
   })
 
   const handleVote = (anecdote) => {
-
     updateAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
   }
 
@@ -32,8 +34,6 @@ const App = () => {
   console.log(result)
   const anecdotes = result.data
 
-
-
   return (
     <div>
       <h3>Anecdote app</h3>
@@ -48,7 +48,13 @@ const App = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
+            <button onClick={() => {
+              handleVote(anecdote)
+              notificationDispatch({ type: 'VOTED', payload: anecdote.content })
+              setTimeout(() => {
+                notificationDispatch({ type: 'RESET' })
+              }, 5000)
+            }}>vote</button>
           </div>
         </div>
       )}
