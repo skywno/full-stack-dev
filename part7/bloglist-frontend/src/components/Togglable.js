@@ -1,14 +1,14 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 const Togglable = (props) => {
-  const [formVisible, setFormVisible] = useState(false)
+  const [formVisible, setFormVisible] = useState(false);
 
-  const hideWhenFormVisible = { display: formVisible ? 'none' : '' }
-  const showWhenFormVisible = { display: formVisible ? '' : 'none' }
+  const hideWhenFormVisible = { display: formVisible ? "none" : "" };
+  const showWhenFormVisible = { display: formVisible ? "" : "none" };
 
   const toggleVisibility = () => {
-    setFormVisible(!formVisible)
-  }
+    setFormVisible(!formVisible);
+  };
 
   return (
     <>
@@ -20,9 +20,9 @@ const Togglable = (props) => {
         <button onClick={toggleVisibility}>cancel</button>
       </div>
     </>
-  )
-}
+  );
+};
 
-Togglable.displayName = 'Togglable'
+Togglable.displayName = "Togglable";
 
-export default Togglable
+export default Togglable;
