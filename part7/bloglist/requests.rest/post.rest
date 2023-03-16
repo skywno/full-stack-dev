@@ -1,0 +1,13 @@
+POST HTTP://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "This is the first blog",
+  "author": "Gyeha Lim",
+  "url" : "fullstackdevelopment.com",
+  "likes": 1234567
+}
+
+###
+
+GET HTTP://localhost:3003/api/blogs
